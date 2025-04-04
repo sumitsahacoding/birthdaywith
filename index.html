@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Happy Birthday 🎂🎉</title>
+  <style>
+    body {
+      background: linear-gradient(to bottom right, #ffccdd, #ffe6f0);
+      text-align: center;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      overflow-x: hidden;
+      padding: 0 10px;
+    }
+    .container {
+      margin-top: 15%;
+    }
+    .button {
+      background-color: #ff6699;
+      color: white;
+      padding: 15px 25px;
+      font-size: 20px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.3s;
+      box-shadow: 0 0 10px #ff99cc;
+    }
+    .button:hover {
+      background-color: #ff3366;
+      transform: scale(1.05);
+    }
+    .message {
+      display: none;
+      font-size: 22px;
+      color: #d63384;
+      margin-top: 30px;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+      background-color: rgba(255, 255, 255, 0.7);
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px #ff99cc;
+      white-space: pre-wrap;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .balloon {
+      position: absolute;
+      bottom: -100px;
+      font-size: 50px;
+      animation: float 5s linear infinite;
+    }
+    @keyframes float {
+      0% { transform: translateY(0); opacity: 1; }
+      100% { transform: translateY(-100vh); opacity: 0; }
+    }
+    .heart {
+      position: absolute;
+      top: -50px;
+      font-size: 30px;
+      color: #ff3366;
+      animation: fall 5s linear infinite;
+    }
+    @keyframes fall {
+      0% { transform: translateY(0); opacity: 1; }
+      100% { transform: translateY(100vh); opacity: 0; }
+    }
+    .star, .petal {
+      position: absolute;
+      font-size: 20px;
+      pointer-events: none;
+      opacity: 0.8;
+    }
+    .star {
+      color: #ffffcc;
+      animation: twinkle 2s infinite;
+    }
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.2; }
+      50% { opacity: 1; }
+    }
+    .petal {
+      color: #ffc0cb;
+      animation: fallPetal 6s linear infinite;
+    }
+    @keyframes fallPetal {
+      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+    }
+    .fireworks {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 999;
+    }
+  </style>
+</head>
+<body>
+  <audio id="bg-audio" loop muted autoplay>
+    <source src="https://cdn.pixabay.com/download/audio/2022/03/28/audio_2f6ba42b0f.mp3?filename=romantic-guitar-ambient-vocals-113897.mp3" type="audio/mp3">
+    Your browser does not support the audio element.
+  </audio>
+  <div class="container">
+    <h1>💖 Happy Birthday! 💖</h1>
+    <button class="button" onclick="startShow()">Surprise for me 🎁</button>
+    <canvas id="fireworks" class="fireworks"></canvas>
+    <div class="message" id="typed-text"></div>
+    <div id="balloons"></div>
+    <div id="hearts"></div>
+    <div id="stars"></div>
+    <div id="petals"></div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+  <script>
+    function startShow() {
+      const audio = document.getElementById("bg-audio");
+      if (audio) {
+        audio.muted = false;
+        audio.play().catch(e => console.warn("Autoplay failed:", e));
+      }
+      launchFireworks();
+      setTimeout(() => {
+        showMessage();
+        confetti({ particleCount: 200, spread: 80, origin: { y: 0.6 } });
+      }, 3000);
+    }
+
+    function showMessage() {
+      const el = document.getElementById("typed-text");
+      const messageText =
+        "🎉 On this special day, I just want to say —\n\nYou light up the world with your smile, your laughter is my favorite melody, and your presence is my greatest joy.\n\nMay this birthday bring you endless happiness, sweet surprises, and all the love you deserve.\n\nHappy Birthday to the one who makes my heart skip a beat. 🎂💖🌸";
+
+      el.style.display = "block";
+      el.textContent = "";
+      let i = 0;
+      function type() {
+        if (i < messageText.length) {
+          el.textContent += messageText.charAt(i);
+          i++;
+          setTimeout(type, 40);
+        }
+      }
+      type();
+      generateBalloons();
+      generateHearts();
+      generateStars();
+      generatePetals();
+    }
+
+    function generateBalloons() {
+      let container = document.getElementById("balloons");
+      container.innerHTML = "";
+      for (let i = 0; i < 10; i++) {
+        let balloon = document.createElement("div");
+        balloon.textContent = "🎈";
+        balloon.classList.add("balloon");
+        balloon.style.left = Math.random() * 100 + "vw";
+        balloon.style.animationDuration = Math.random() * 2 + 3 + "s";
+        container.appendChild(balloon);
+      }
+    }
+
+    function generateHearts() {
+      let container = document.getElementById("hearts");
+      container.innerHTML = "";
+      for (let i = 0; i < 15; i++) {
+        let heart = document.createElement("div");
+        heart.textContent = "💖";
+        heart.classList.add("heart");
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.animationDuration = Math.random() * 3 + 2 + "s";
+        container.appendChild(heart);
+      }
+    }
+
+    function generateStars() {
+      let container = document.getElementById("stars");
+      container.innerHTML = "";
+      for (let i = 0; i < 25; i++) {
+        let star = document.createElement("div");
+        star.textContent = "🌟";
+        star.classList.add("star");
+        star.style.top = Math.random() * 100 + "vh";
+        star.style.left = Math.random() * 100 + "vw";
+        star.style.animationDelay = Math.random() * 2 + "s";
+        container.appendChild(star);
+      }
+    }
+
+    function generatePetals() {
+      let container = document.getElementById("petals");
+      container.innerHTML = "";
+      for (let i = 0; i < 20; i++) {
+        let petal = document.createElement("div");
+        petal.textContent = "🌸";
+        petal.classList.add("petal");
+        petal.style.left = Math.random() * 100 + "vw";
+        petal.style.animationDuration = Math.random() * 4 + 3 + "s";
+        petal.style.animationDelay = Math.random() * 3 + "s";
+        container.appendChild(petal);
+      }
+    }
+
+    function launchFireworks() {
+      const canvas = document.getElementById("fireworks");
+      const ctx = canvas.getContext("2d");
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      let particles = [];
+      for (let i = 0; i < 60; i++) {
+        particles.push({
+          x: canvas.width / 2,
+          y: canvas.height / 2,
+          radius: Math.random() * 3 + 2,
+          color: `hsl(${Math.random() * 360}, 100%, 50%)`,
+          angle: Math.random() * 2 * Math.PI,
+          speed: Math.random() * 5 + 2
+        });
+      }
+      let animationId = requestAnimationFrame(draw);
+      function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach((p, index) => {
+          p.x += Math.cos(p.angle) * p.speed;
+          p.y += Math.sin(p.angle) * p.speed;
+          p.radius *= 0.96;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.radius, 0, 2 * Math.PI);
+          ctx.fillStyle = p.color;
+          ctx.fill();
+          if (p.radius < 0.5) particles.splice(index, 1);
+        });
+        if (particles.length > 0) {
+          animationId = requestAnimationFrame(draw);
+        } else {
+          cancelAnimationFrame(animationId);
+        }
+      }
+    }
+  </script>
+</body>
+</html>
